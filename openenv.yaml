@@ -1,0 +1,79 @@
+name: CAST
+description: >
+  CAST (Communication Accessibility & Sync Tool) is a Reinforcement Learning
+  environment where an AI agent learns to interpret sign language gestures
+  under real-world uncertain conditions (noise, context variability).
+  The agent selects from three actions and is rewarded for correct, fast,
+  and emergency-aware interpretations.
+
+version: "1.0.0"
+author: "Ankit Pandit"
+license: MIT
+
+# ─────────────────────────────────────────────
+# State Space
+# ─────────────────────────────────────────────
+state_space:
+  type: discrete
+  fields:
+    gesture:
+      type: categorical
+      values: [hello, stop, help, danger]
+      description: The sign language gesture observed by the agent.
+
+    noise:
+      type: categorical
+      values: [low, medium, high]
+      description: >
+        Environmental noise level that may degrade gesture recognition
+        accuracy (e.g., background motion, lighting).
+
+    context:
+      type: categorical
+      values: [classroom, road, home]
+      description: >
+        Physical or social context in which the gesture is performed.
+        Context affects urgency and action priority.
+
+# ─────────────────────────────────────────────
+# Action Space
+# ─────────────────────────────────────────────
+action_space:
+  type: discrete
+  actions:
+    - id: show_text
+      description: Display a readable text translation of the gesture on screen.
+
+    - id: ask_repeat
+      description: Request that the user repeat the gesture due to high noise interference.
+
+    - id: trigger_alert
+      description: >
+        Trigger an emergency alert for critical gestures (help / danger).
+        Notifies nearby systems or caregivers immediately.
+
+# ─────────────────────────────────────────────
+# Reward Structure
+# ─────────────────────────────────────────────
+reward:
+  correct_interpretation: +1
+  wrong_interpretation: -1
+  emergency_bonus: +2       # added on top of correct if gesture in [help, danger]
+  fast_response_bonus: +0.5 # awarded when response_time < 0.5 seconds
+
+# ─────────────────────────────────────────────
+# Entry Points
+# ─────────────────────────────────────────────
+entrypoints:
+  inference: inference.py
+  demo:      app.py
+
+# ─────────────────────────────────────────────
+# Runtime
+# ─────────────────────────────────────────────
+runtime:
+  language: python
+  min_version: "3.9"
+  requirements: requirements.txt
+  offline_capable: true
+  external_apis: none

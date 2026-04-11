@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "cast-openenv"
+version = "1.0.0"
+description = "CAST – Communication Accessibility & Sync Tool: A Reinforcement Learning environment for real-world sign language interpretation."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Ankit Pandit" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.20.0",
+    "gradio>=4.0.0",
+    "huggingface_hub>=0.23.0",
+    "openenv-core>=0.2.0",
+    "openai>=1.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://huggingface.co/spaces/ankkkkit/cast-openenv"
+"Source" = "https://github.com/Ankkkkit19/-cast-openenv"
+
+[project.scripts]
+server = "server.app:main"
+
+[tool.setuptools]
+py-modules = ["app", "inference"]
