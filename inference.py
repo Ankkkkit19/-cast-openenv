@@ -97,8 +97,10 @@ def log_start(task: str = TASK_NAME):
     print(f"[START] task={task}", flush=True)
 
 def log_step(step: int, reward: float = 0.0, **kwargs):
+    # Normalize intermediate reward to (0, 1) range for validator compliance
+    norm_reward = normalize_score(reward)
     extras = " ".join(f"{k}={v}" for k, v in kwargs.items())
-    line = f"[STEP] step={step} reward={reward}"
+    line = f"[STEP] step={step} reward={norm_reward}"
     if extras:
         line += f" {extras}"
     print(line, flush=True)
